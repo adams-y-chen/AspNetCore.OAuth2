@@ -2,7 +2,7 @@
 # This .gitignore file was automatically created by Microsoft(R) Visual Studio.
 ################################################################################
 
-/.vs
+/.vs/ImageGallery/v16
 /src/ImageGallery.API/bin
 /src/ImageGallery.API/obj
 /src/ImageGallery.Model/obj
