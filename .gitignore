@@ -1,0 +1,13 @@
+﻿################################################################################
+# This .gitignore file was automatically created by Microsoft(R) Visual Studio.
+################################################################################
+
+/.vs
+/src/ImageGallery.API/bin
+/src/ImageGallery.API/obj
+/src/ImageGallery.Model/obj
+/src/ImageGallery.Model/bin
+/src/ImageGallery.Client/obj
+/src/ImageGallery.Client/bin
+/src/Marvin.IDP/obj
+
