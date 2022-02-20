@@ -31,3 +31,10 @@ The template "IdentityServer4 Empty" was created successfully.
 ### run IdentiyServer and inspect discovery document (configuration)
 The default url for the discovery document:
 https://localhost:44318/.well-known/openid-configuration
+
+Other application can read the discovery document to discover the enpoints.
+
+### add UI to IdentityServer
+PS C:\YUHECHEN\AspNetCore\AspNetCore.OAuth2\src\Marvin.IDP> dotnet new is4ui
+The template "IdentityServer4 Quickstart UI (UI assets only)" was created successfully.
+
