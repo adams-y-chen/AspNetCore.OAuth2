@@ -28,4 +28,6 @@ IdentityServer4 with In-Memory Stores and Test Users  is4inmem    [C#]      Web/
 PS C:\YUHECHEN\AspNetCore\AspNetCore.OAuth2\src> dotnet new is4empty -n Marvin.IDP
 The template "IdentityServer4 Empty" was created successfully.
 
-
+### run IdentiyServer and check configuration
+The default url for the configuration:
+https://localhost:44318/.well-known/openid-configuration
