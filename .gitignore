@@ -10,4 +10,6 @@
 /src/ImageGallery.Client/obj
 /src/ImageGallery.Client/bin
 /src/Marvin.IDP/obj
+/src/Marvin.IDP/bin
+/src/Marvin.IDP/tempkey.jwk
 
