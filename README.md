@@ -8,6 +8,9 @@ The accompanying course can be watched here: https://app.pluralsight.com/library
 
 ## Prepare
 
+IdenityServer4 documentation:
+https://identityserver4.readthedocs.io/en/latest/topics/signin_external_providers.html
+
 ### install dotnet project template for IdentityServer4
 
 PS C:\YUHECHEN\AspNetCore\AspNetCore.OAuth2\src> dotnet new -i IdentityServer4.Templates
@@ -37,4 +40,8 @@ Other application can read the discovery document to discover the enpoints.
 ### add UI to IdentityServer
 PS C:\YUHECHEN\AspNetCore\AspNetCore.OAuth2\src\Marvin.IDP> dotnet new is4ui
 The template "IdentityServer4 Quickstart UI (UI assets only)" was created successfully.
+
+Uncomment disabled code in Startup.cs to add MVC and controllers. Then launch the the server again from VS.
+Use the following url to access to the UI.
+https://localhost:44318/
 
