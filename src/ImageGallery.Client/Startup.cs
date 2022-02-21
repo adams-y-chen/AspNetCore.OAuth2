@@ -52,7 +52,8 @@ namespace ImageGallery.Client
                 options.Scope.Add("openid"); // request user identity scope
                 options.Scope.Add("profile"); // request user profile scope which can access user profiles such as given name and family name
                 options.SaveTokens = true; // middleware saves the received tokens so it can be used afterwards
-                options.ClientSecret = "secret"; //Client secret which is presented to IdenityServer during token request.
+                options.ClientSecret = "secret"; // Client secret which is presented to IdenityServer during token request.
+                options.GetClaimsFromUserInfoEndpoint = true; // Call UserInfo endpoint on IdentityServer to get user profile
             });
         }
 
