@@ -13,6 +13,7 @@ using System.Text.Json;
 using System.Threading.Tasks;
 using System.Diagnostics;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 
 namespace ImageGallery.Client.Controllers
 { 
@@ -187,6 +188,9 @@ namespace ImageGallery.Client.Controllers
             // Passing the cookie scheme name when configuring the middleware in Setup.cs.
             // This will clean up the user claims in the cookie.
             await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+
+            // Redirect the web browser logout to the Identity Server as well. So the user get logged out of Identity Server as well.
+            await HttpContext.SignOutAsync(OpenIdConnectDefaults.AuthenticationScheme);
         }
 
         // Helper function to print the user identity.
