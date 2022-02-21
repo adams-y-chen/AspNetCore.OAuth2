@@ -33,6 +33,7 @@ namespace Marvin.IDP
                     ClientId = "imagegalleryclient", // client application ID which client presents when request authroization code
                     AllowedGrantTypes = GrantTypes.Code, // Allow Authorization Code flow
                     RequirePkce = false,
+                    RequireConsent = true, // display consent page after user login for scopes requested by client app
                     RedirectUris = new List<string>() // Redirect user to Image Gallery MVC app after user authenticates to IdentityServer.
                     {
                         "https://localhost:44389/signin-oidc" // URL of the Image Gallery MVC application
