@@ -11,8 +11,11 @@ namespace Marvin.IDP
     {
         public static IEnumerable<IdentityResource> IdentityResources =>
             new IdentityResource[]
-            { 
-                new IdentityResources.OpenId()
+            {
+                // map to user idenitiy claim
+                new IdentityResources.OpenId(),
+                // map to profile related claims such as given name and family name 
+                new IdentityResources.Profile()
             };
 
         public static IEnumerable<ApiScope> ApiScopes =>
