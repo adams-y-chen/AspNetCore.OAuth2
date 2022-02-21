@@ -38,6 +38,10 @@ namespace Marvin.IDP
                     {
                         "https://localhost:44389/signin-oidc" // URL of the Image Gallery MVC application
                     },
+                    PostLogoutRedirectUris = new List<string>()
+                    {
+                        "https://localhost:44389/signout-callback-oidc" // Redirect the user to the MVC application after signed out.
+                    },
                     AllowedScopes =
                     {
                         // Specify scopes that client application can request access to.
