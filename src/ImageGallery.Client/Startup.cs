@@ -47,7 +47,7 @@ namespace ImageGallery.Client
                 options.Authority = "https://localhost:44318"; // Our IdentityServer in Marvin.IDP project. Use this URL to read the discovery document to discovery endpoints.
                 options.ClientId = "imagegalleryclient"; // client application ID which is presented to IdenityServer during token request.
                 options.ResponseType = "code"; // use Authorization Code flow for code grant flow
-                options.UsePkce = false;
+                // options.UsePkce = false;
                 // options.CallbackPath = new PathString("..."); // if not specified, use default redirect url that was registered in Marvin.IDP project.
                 options.Scope.Add("openid"); // request user identity scope
                 options.Scope.Add("profile"); // request user profile scope which can access user profiles such as given name and family name

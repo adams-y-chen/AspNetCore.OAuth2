@@ -12,6 +12,7 @@ using System.Net.Http;
 using System.Text.Json;
 using System.Threading.Tasks;
 using System.Diagnostics;
+using Microsoft.AspNetCore.Authentication.Cookies;
 
 namespace ImageGallery.Client.Controllers
 { 
@@ -179,6 +180,13 @@ namespace ImageGallery.Client.Controllers
             response.EnsureSuccessStatusCode();
 
             return RedirectToAction("Index");
+        }
+
+        public async Task Logout()
+        {
+            // Passing the cookie scheme name when configuring the middleware in Setup.cs.
+            // This will clean up the user claims in the cookie.
+            await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
         }
 
         // Helper function to print the user identity.
