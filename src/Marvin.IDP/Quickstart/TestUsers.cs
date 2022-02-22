@@ -29,7 +29,8 @@ namespace IdentityServerHost.Quickstart.UI
                          {
                              new Claim("given_name", "Frank"),
                              new Claim("family_name", "Underwood"),
-                             new Claim("address", "1 main road Boston MA 01811")
+                             new Claim("address", "1 main road Boston MA 01811"),
+                             new Claim("role", "FreeUser")
                          }
                      },
                      new TestUser
@@ -42,7 +43,8 @@ namespace IdentityServerHost.Quickstart.UI
                          {
                              new Claim("given_name", "Claire"),
                              new Claim("family_name", "Underwood"),
-                             new Claim("address", "2 memorial street Cambridge MA 01822")
+                             new Claim("address", "2 memorial street Cambridge MA 01822"),
+                             new Claim("role", "PayingUser")
                          }
                      }
                  };

@@ -68,12 +68,14 @@ namespace ImageGallery.Client
                 options.Scope.Add("openid"); // request user identity scope
                 options.Scope.Add("profile"); // request user profile scope which can access user profiles such as given name and family name
                 options.Scope.Add("address"); // request address scope
+                options.Scope.Add("roles"); // request for roles scope
                 // options.ClaimActions.Remove("nbf"); // remove notbefore (nbf) claim filters so that notbefore claim is not filtered by the middleware.
                 options.ClaimActions.DeleteClaim("address");
                 options.ClaimActions.DeleteClaim("sid"); // remove (filter out) sid claim. the API naming is a bit confusing though.
                 options.ClaimActions.DeleteClaim("idp");
                 options.ClaimActions.DeleteClaim("s_hash");
                 options.ClaimActions.DeleteClaim("auth_time");
+                options.ClaimActions.MapUniqueJsonKey("role", "role"); // add role to claim transformation mapping. otherwise, the User claims created by the middleware won't include role claim.
                 options.SaveTokens = true; // middleware saves the received tokens so it can be used afterwards
                 options.ClientSecret = "secret"; // Client secret which is presented to IdenityServer during token request.
                 options.GetClaimsFromUserInfoEndpoint = true; // Call UserInfo endpoint on IdentityServer to get user profile
