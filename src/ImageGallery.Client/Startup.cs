@@ -22,9 +22,9 @@ namespace ImageGallery.Client
         {
             Configuration = configuration;
 
-            // Disable JWT claim name transformation mapping.
+            // Reset JWT claim name transformation mapping.
+            // disable mapping likes sub => http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier
             // This will keep the original claim from the token.
-            // e.g. sub => http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier
             JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
         }
 
@@ -56,7 +56,11 @@ namespace ImageGallery.Client
                 options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
                 options.DefaultChallengeScheme = OpenIdConnectDefaults.AuthenticationScheme;
             })
-            .AddCookie(CookieAuthenticationDefaults.AuthenticationScheme) // Add to cookie once the identity token is validated and transferred to user identity claim.
+            // Add to cookie once the identity token is validated and transferred to user identity claim.
+            .AddCookie(CookieAuthenticationDefaults.AuthenticationScheme, options =>
+            {
+                options.AccessDeniedPath = "/Authorization/AccessDenied";
+            }) 
             .AddOpenIdConnect(OpenIdConnectDefaults.AuthenticationScheme, options => // register open ID connect handler.
             {
                 // Configure open ID connect middleware.
