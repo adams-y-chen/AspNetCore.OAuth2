@@ -14,6 +14,7 @@ using System.Threading.Tasks;
 using System.Diagnostics;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
+using IdentityModel.Client;
 
 namespace ImageGallery.Client.Controllers
 { 
@@ -191,6 +192,42 @@ namespace ImageGallery.Client.Controllers
 
             // Redirect the web browser logout to the Identity Server as well. So the user get logged out of Identity Server as well.
             await HttpContext.SignOutAsync(OpenIdConnectDefaults.AuthenticationScheme);
+        }
+
+        public async Task<IActionResult> OrderFrame()
+        {
+            var idpClient = _httpClientFactory.CreateClient("IDPClient");
+
+            // Read the discovery document from IdentityServer
+            var metadataResponse = await idpClient.GetDiscoveryDocumentAsync();
+
+            if (metadataResponse.IsError)
+            {
+                throw new Exception("Problem accessing the IDP discovery endpoint",
+                    metadataResponse.Exception);
+            }
+
+            var accessToken = await HttpContext.GetTokenAsync(OpenIdConnectParameterNames.AccessToken);
+
+            // Read user info from UserInfo endpoint.
+            var userInfoResponse = await idpClient.GetUserInfoAsync(
+                new UserInfoRequest()
+                {
+                    Address = metadataResponse.UserInfoEndpoint,
+                    Token = accessToken
+                });
+
+            if (userInfoResponse.IsError)
+            {
+                throw new Exception("Problem accessing the IDP UserInfo endpoint", 
+                    userInfoResponse.Exception);
+            }
+
+            // Read address from the claims in the response
+            var address = userInfoResponse.Claims
+                .FirstOrDefault(p => p.Type == "address")?.Value;
+
+            return View(new OrderFrameViewModel(address));
         }
 
         // Helper function to print the user identity.

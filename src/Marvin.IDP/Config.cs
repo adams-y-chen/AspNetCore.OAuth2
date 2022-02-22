@@ -15,8 +15,10 @@ namespace Marvin.IDP
             {
                 // map to user idenitiy claim
                 new IdentityResources.OpenId(),
-                // map to profile related claims such as given name and family name 
-                new IdentityResources.Profile()
+                // Profile scope: map to profile related claims such as given name and family name 
+                new IdentityResources.Profile(),
+                // Address scope
+                new IdentityResources.Address()
             };
 
         public static IEnumerable<ApiScope> ApiScopes =>
@@ -46,7 +48,8 @@ namespace Marvin.IDP
                     {
                         // Specify scopes that client application can request access to.
                         IdentityServerConstants.StandardScopes.OpenId,
-                        IdentityServerConstants.StandardScopes.Profile
+                        IdentityServerConstants.StandardScopes.Profile,
+                        IdentityServerConstants.StandardScopes.Address
                     },
                     ClientSecrets =
                     {

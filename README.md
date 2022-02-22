@@ -45,3 +45,6 @@ Uncomment disabled code in Startup.cs to add MVC and controllers. Then launch th
 Use the following url to access to the UI.
 https://localhost:44318/
 
+### call into UserInfo endpoint to get address
+Install identitymodel nuget package which provides extention function to help call UserInfo endpoint.
+Define a HttpClient service in Startup.cs.

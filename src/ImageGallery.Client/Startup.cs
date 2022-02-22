@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Authentication.Cookies;
+﻿using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -31,10 +32,18 @@ namespace ImageGallery.Client
             services.AddControllersWithViews()
                  .AddJsonOptions(opts => opts.JsonSerializerOptions.PropertyNamingPolicy = null);
 
-            // create an HttpClient used for accessing the API
+            // create an HttpClient used for accessing the Web API service
             services.AddHttpClient("APIClient", client =>
             {
                 client.BaseAddress = new Uri("https://localhost:44366/");
+                client.DefaultRequestHeaders.Clear();
+                client.DefaultRequestHeaders.Add(HeaderNames.Accept, "application/json");
+            });
+
+            // create an HttpClient used for accessing the IDP (IdentityServer)
+            services.AddHttpClient("IDPClient", client =>
+            {
+                client.BaseAddress = new Uri("https://localhost:44318/");
                 client.DefaultRequestHeaders.Clear();
                 client.DefaultRequestHeaders.Add(HeaderNames.Accept, "application/json");
             });
@@ -48,7 +57,8 @@ namespace ImageGallery.Client
             .AddCookie(CookieAuthenticationDefaults.AuthenticationScheme) // Add to cookie once the identity token is validated and transferred to user identity claim.
             .AddOpenIdConnect(OpenIdConnectDefaults.AuthenticationScheme, options => // register open ID connect handler.
             {
-                // Configure open ID connect identity server
+                // Configure open ID connect middleware.
+                // Default settings can be found at: https://github.com/aspnet/Security/blob/master/src/Microsoft.AspNetCore.Authentication.OpenIdConnect/OpenIdConnectOptions.cs
                 options.SignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
                 options.Authority = "https://localhost:44318"; // Our IdentityServer in Marvin.IDP project. Use this URL to read the discovery document to discovery endpoints.
                 options.ClientId = "imagegalleryclient"; // client application ID which is presented to IdenityServer during token request.
@@ -57,6 +67,13 @@ namespace ImageGallery.Client
                 // options.CallbackPath = new PathString("..."); // if not specified, use default redirect url that was registered in Marvin.IDP project.
                 options.Scope.Add("openid"); // request user identity scope
                 options.Scope.Add("profile"); // request user profile scope which can access user profiles such as given name and family name
+                options.Scope.Add("address"); // request address scope
+                // options.ClaimActions.Remove("nbf"); // remove notbefore (nbf) claim filters so that notbefore claim is not filtered by the middleware.
+                options.ClaimActions.DeleteClaim("address");
+                options.ClaimActions.DeleteClaim("sid"); // remove (filter out) sid claim. the API naming is a bit confusing though.
+                options.ClaimActions.DeleteClaim("idp");
+                options.ClaimActions.DeleteClaim("s_hash");
+                options.ClaimActions.DeleteClaim("auth_time");
                 options.SaveTokens = true; // middleware saves the received tokens so it can be used afterwards
                 options.ClientSecret = "secret"; // Client secret which is presented to IdenityServer during token request.
                 options.GetClaimsFromUserInfoEndpoint = true; // Call UserInfo endpoint on IdentityServer to get user profile
