@@ -26,6 +26,10 @@ namespace ImageGallery.Client.Controllers.HttpHandlers
             var accessToken = await _httpContextAccessor
                 .HttpContext.GetTokenAsync(OpenIdConnectParameterNames.AccessToken);
 
+            // check refresh token
+            var refreshToken = await _httpContextAccessor
+                .HttpContext.GetTokenAsync(OpenIdConnectParameterNames.RefreshToken);
+
             if (!string.IsNullOrWhiteSpace(accessToken))
             {
                 request.SetBearerToken(accessToken);

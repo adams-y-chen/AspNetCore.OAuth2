@@ -101,6 +101,7 @@ namespace ImageGallery.Client
                 options.Scope.Add("imagegalleryapi"); // request access to the ImageGallery.API server scope.
                 options.Scope.Add("country");
                 options.Scope.Add("subscriptionlevel");
+                options.Scope.Add("offline_access"); // request refresh token. Middleware will get the refresh token from IDP Token endpoint and save it for future use.
                 // options.ClaimActions.Remove("nbf"); // remove notbefore (nbf) claim filters so that notbefore claim is not filtered by the middleware.
                 options.ClaimActions.DeleteClaim("address");
                 options.ClaimActions.DeleteClaim("sid"); // remove (filter out) sid claim. the API naming is a bit confusing though.

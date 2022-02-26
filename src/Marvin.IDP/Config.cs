@@ -89,7 +89,14 @@ namespace Marvin.IDP
                     ClientSecrets =
                     {
                         new Secret("secret".Sha256()) // client secret which client presents
-                    }
+                    },
+                    // IdentityTokenLifetime = 5 * 60, // id token life defaults to 5 minutes
+                    // AuthorizationCodeLifetime = 5 * 60, // authroization code life defaults to 5 minutes
+                    AccessTokenLifetime = 2 * 60, // change access token life to 2 minutes for testing. Note that authorization middleware have 5 minutes tolerance to handle potential clock offset. Thus, wait 5 minute until ImageGallery.API rejects the token.
+                    AllowOfflineAccess = true, // allow offline_access scope so that client can get refresh token.
+                    // AbsoluteRefreshTokenLifetime = , // default to 30 days
+                    // SlidingRefreshTokenLifetime = , // allow refresh the refresh token before expire time.
+                    UpdateAccessTokenClaimsOnRefresh = true // pick up new claims when refresh access token
                 }
             };
     }
