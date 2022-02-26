@@ -35,6 +35,22 @@ namespace ImageGallery.Client
             services.AddControllersWithViews()
                  .AddJsonOptions(opts => opts.JsonSerializerOptions.PropertyNamingPolicy = null);
 
+            // reigster and configure Claim Based Access Control (CBAC).
+            // Also refered as Attribute Based Access Control, or Policy Based Access Control.
+            services.AddAuthorization(authorizationOptions =>
+            {
+                // A policy can combine multiple claims and can be more flexible than Role Based Access Control.
+                authorizationOptions.AddPolicy(
+                   "CanOrderFrame",
+                    policyBuilder =>
+                    {
+                        policyBuilder.RequireAuthenticatedUser();
+                        policyBuilder.RequireClaim("country", "be"); // to specifiy multiple contries: policyBuilder.RequireClaim("country", "be", "nl")
+                        policyBuilder.RequireClaim("subscriptionlevel", "PayingUser");
+                        // policyBuilder.RequireRole("SomeRole"); // demo: policy can check role
+                    });
+            });
+
             // register (inject) IHttpContextAccessor
             services.AddHttpContextAccessor();
 
@@ -83,6 +99,8 @@ namespace ImageGallery.Client
                 options.Scope.Add("address"); // request address scope
                 options.Scope.Add("roles"); // request for roles scope
                 options.Scope.Add("imagegalleryapi"); // request access to the ImageGallery.API server scope.
+                options.Scope.Add("country");
+                options.Scope.Add("subscriptionlevel");
                 // options.ClaimActions.Remove("nbf"); // remove notbefore (nbf) claim filters so that notbefore claim is not filtered by the middleware.
                 options.ClaimActions.DeleteClaim("address");
                 options.ClaimActions.DeleteClaim("sid"); // remove (filter out) sid claim. the API naming is a bit confusing though.
@@ -90,6 +108,8 @@ namespace ImageGallery.Client
                 options.ClaimActions.DeleteClaim("s_hash");
                 options.ClaimActions.DeleteClaim("auth_time");
                 options.ClaimActions.MapUniqueJsonKey("role", "role"); // add role to claim transformation mapping. otherwise, the User claims created by the middleware won't include role claim.
+                options.ClaimActions.MapUniqueJsonKey("country", "country");
+                options.ClaimActions.MapUniqueJsonKey("subscriptionlevel", "subscriptionlevel");
                 options.SaveTokens = true; // middleware saves the received tokens so it can be used afterwards
                 options.ClientSecret = "secret"; // Client secret which is presented to IdenityServer during token request.
                 options.GetClaimsFromUserInfoEndpoint = true; // Call UserInfo endpoint on IdentityServer to get user profile

@@ -57,6 +57,7 @@ Define a HttpClient service in Startup.cs. Use it to request extra user profile 
 
 ### parse access token in ImageGallery.API and use it for authorization (RBAC).
 In ImageGallery.API project, install IdentityServer4.AccessTokenValidation.
+In ImageGallery.Client, add the http client to pass access to ImageGallery.API in Bearer HTTP request header.
 
 ### sample id token
 
