@@ -32,6 +32,7 @@ namespace ImageGallery.API
 
             // Configure authentication middleware to parse the access token in Bearer header.
             services.AddAuthentication(IdentityServerAuthenticationDefaults.AuthenticationScheme)
+                // Add access token validation.
                 .AddIdentityServerAuthentication(options =>
                 {
                     // the middleware validates the token. to do that, it needs to read public key from IDP.

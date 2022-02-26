@@ -30,6 +30,12 @@ namespace ImageGallery.API.Services
             return _context.Images
                 .OrderBy(i => i.Title).ToList();
         }
+        
+        public IEnumerable<Image> GetImagesByOwner(string ownerId)
+        {
+            return _context.Images.Where(p => p.OwnerId == ownerId)
+                .OrderBy(i => i.Title).ToList();
+        }
 
         public bool IsImageOwner(Guid id, string ownerId)
         {
