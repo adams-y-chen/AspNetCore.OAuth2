@@ -26,9 +26,24 @@ namespace Marvin.IDP
                     new List<string>() { "role" }) // claims
             };
 
+        public static IEnumerable<ApiResource> Apis =>
+            new ApiResource[]
+            {
+                // this will add "imagegalleryapi" to the aud claim of the issued access token.
+                new ApiResource("imagegalleryapi", "Image Gallery API")
+                {
+                    Scopes =
+                    {
+                        "imagegalleryapi"
+                    }
+                }
+            };
+
         public static IEnumerable<ApiScope> ApiScopes =>
             new ApiScope[]
-            { };
+            {
+                new ApiScope("imagegalleryapi", "Image Gallery API") // the backend ImageGallery.API server
+            };
 
         public static IEnumerable<Client> Clients =>
             new Client[] 
@@ -55,7 +70,8 @@ namespace Marvin.IDP
                         IdentityServerConstants.StandardScopes.OpenId,
                         IdentityServerConstants.StandardScopes.Profile,
                         IdentityServerConstants.StandardScopes.Address,
-                        "roles"
+                        "roles",
+                        "imagegalleryapi"
                     },
                     ClientSecrets =
                     {

@@ -1,4 +1,5 @@
 ﻿using IdentityModel;
+using ImageGallery.Client.Controllers.HttpHandlers;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
@@ -34,13 +35,19 @@ namespace ImageGallery.Client
             services.AddControllersWithViews()
                  .AddJsonOptions(opts => opts.JsonSerializerOptions.PropertyNamingPolicy = null);
 
+            // register (inject) IHttpContextAccessor
+            services.AddHttpContextAccessor();
+
+            // register the BearerTokenHandler
+            services.AddTransient<BearerTokenHandler>();
+
             // create an HttpClient used for accessing the Web API service
             services.AddHttpClient("APIClient", client =>
             {
                 client.BaseAddress = new Uri("https://localhost:44366/");
                 client.DefaultRequestHeaders.Clear();
                 client.DefaultRequestHeaders.Add(HeaderNames.Accept, "application/json");
-            });
+            }).AddHttpMessageHandler<BearerTokenHandler>();
 
             // create an HttpClient used for accessing the IDP (IdentityServer)
             services.AddHttpClient("IDPClient", client =>
@@ -75,6 +82,7 @@ namespace ImageGallery.Client
                 options.Scope.Add("profile"); // request user profile scope which can access user profiles such as given name and family name
                 options.Scope.Add("address"); // request address scope
                 options.Scope.Add("roles"); // request for roles scope
+                options.Scope.Add("imagegalleryapi"); // request access to the ImageGallery.API server scope.
                 // options.ClaimActions.Remove("nbf"); // remove notbefore (nbf) claim filters so that notbefore claim is not filtered by the middleware.
                 options.ClaimActions.DeleteClaim("address");
                 options.ClaimActions.DeleteClaim("sid"); // remove (filter out) sid claim. the API naming is a bit confusing though.

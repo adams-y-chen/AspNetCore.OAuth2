@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using IdentityServer4.AccessTokenValidation;
 using ImageGallery.API.Entities;
 using ImageGallery.API.Services;
 using Microsoft.AspNetCore.Builder;
@@ -9,6 +10,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Microsoft.IdentityModel.Tokens;
 using System;
 
 namespace ImageGallery.API
@@ -27,6 +29,15 @@ namespace ImageGallery.API
         {
             services.AddControllers()
                      .AddJsonOptions(opts => opts.JsonSerializerOptions.PropertyNamingPolicy = null);
+
+            // Configure authentication middleware to parse the access token in Bearer header.
+            services.AddAuthentication(IdentityServerAuthenticationDefaults.AuthenticationScheme)
+                .AddIdentityServerAuthentication(options =>
+                {
+                    // the middleware validates the token. to do that, it needs to read public key from IDP.
+                    options.Authority = "https://localhost:44318"; // IDP url. i.e. the identity server.
+                    options.ApiName = "imagegalleryapi"; // validate the aud claim in access token matches this.
+                });
 
             // register the DbContext on the container, getting the connection string from
             // appSettings (note: use this during development; in a production environment,
@@ -72,7 +83,10 @@ namespace ImageGallery.API
 
             app.UseStaticFiles();
 
-            app.UseRouting(); 
+            app.UseRouting();
+
+            app.UseAuthentication();
+            app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
             {

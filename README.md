@@ -48,3 +48,6 @@ https://localhost:44318/
 ### call into UserInfo endpoint to get address
 Install identitymodel nuget package which provides extention function to help call UserInfo endpoint.
 Define a HttpClient service in Startup.cs.
+
+### parse access token in ImageGallery.API and use it for authorization (RBAC).
+In ImageGallery.API project, install IdentityServer4.AccessTokenValidation.
