@@ -1,7 +1,9 @@
 ﻿using AutoMapper;
 using IdentityServer4.AccessTokenValidation;
+using ImageGallery.API.Authorization;
 using ImageGallery.API.Entities;
 using ImageGallery.API.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -29,6 +31,23 @@ namespace ImageGallery.API
         {
             services.AddControllers()
                      .AddJsonOptions(opts => opts.JsonSerializerOptions.PropertyNamingPolicy = null);
+
+            services.AddHttpContextAccessor();
+            // Register as Scoped as MustOwnerImageHandler access our DB repository which is also registered as Scoped.
+            services.AddScoped<IAuthorizationHandler, MustOwnImageHandler>();
+
+            // Register and configure authorization middlerware.
+            services.AddAuthorization(authorizationOptions =>
+            {
+                // Add a customized policy based access control handler.
+                authorizationOptions.AddPolicy(
+                        "MustOwnImage",
+                        policyBuilder =>
+                        {
+                            policyBuilder.RequireAuthenticatedUser();
+                            policyBuilder.AddRequirements(new MustOwnImageRequirement());
+                        });
+            });
 
             // Configure authentication middleware to parse the access token in Bearer header.
             services.AddAuthentication(IdentityServerAuthenticationDefaults.AuthenticationScheme)

@@ -122,4 +122,9 @@ Decodes to:
   ]
 }
 
+### Policy Based Access Control. Also referred as Claim or Attribute based Access Control.
+In ImageGallery.API, add Autorization and a customized policy IAuthorizationRequirement.
+
+
+
 
