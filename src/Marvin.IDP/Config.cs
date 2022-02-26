@@ -30,7 +30,9 @@ namespace Marvin.IDP
             new ApiResource[]
             {
                 // this will add "imagegalleryapi" to the aud claim of the issued access token.
-                new ApiResource("imagegalleryapi", "Image Gallery API")
+                new ApiResource("imagegalleryapi", "Image Gallery API", 
+                    // include the role claim into the returned access token.
+                    new List<string>(){ "role"})
                 {
                     Scopes =
                     {

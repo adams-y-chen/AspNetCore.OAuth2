@@ -34,6 +34,8 @@
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
                     <li><a asp-area="" asp-controller="Gallery" asp-action="Index">Home</a></li>
+
+                    <!-- leave "Add an image" outside Paying User to test authroization. needs to be moved for paying user only for production code. -->
                     <li><a asp-area="" asp-controller="Gallery" asp-action="AddImage">Add an image</a></li>
                     @if (User.IsInRole("PayingUser"))
                     {
