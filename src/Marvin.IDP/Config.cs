@@ -45,7 +45,8 @@ namespace Marvin.IDP
                     Scopes =
                     {
                         "imagegalleryapi"
-                    }
+                    },
+                    ApiSecrets = { new Secret("apisecret".Sha256()) }
                 }
             };
 
@@ -92,6 +93,7 @@ namespace Marvin.IDP
                     },
                     // IdentityTokenLifetime = 5 * 60, // id token life defaults to 5 minutes
                     // AuthorizationCodeLifetime = 5 * 60, // authroization code life defaults to 5 minutes
+                    // AccessTokenType = AccessTokenType.Reference, // return a token reference which requires ImageGallery.API to send token reference to IDP for validation. This is needed to support token revocation.
                     AccessTokenLifetime = 2 * 60, // change access token life to 2 minutes for testing. Note that authorization middleware have 5 minutes tolerance to handle potential clock offset. Thus, wait 5 minute until ImageGallery.API rejects the token.
                     AllowOfflineAccess = true, // allow offline_access scope so that client can get refresh token.
                     // AbsoluteRefreshTokenLifetime = , // default to 30 days

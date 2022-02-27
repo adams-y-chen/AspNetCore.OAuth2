@@ -57,6 +57,7 @@ namespace ImageGallery.API
                     // the middleware validates the token. to do that, it needs to read public key from IDP.
                     options.Authority = "https://localhost:44318"; // IDP url. i.e. the identity server.
                     options.ApiName = "imagegalleryapi"; // validate the aud claim in access token matches this.
+                    options.ApiSecret = "apisecret";
                 });
 
             // register the DbContext on the container, getting the connection string from
