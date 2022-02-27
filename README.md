@@ -47,7 +47,7 @@ Use the following url to access to the UI.
 https://localhost:44318/
 
 ### authenticate user in ImageGallery.Client web server.
-Install Microsoft.AspNetCore.Authentication.OpenIdConnect.
+Install Microsoft.AspNetCore.Authentication.OpenIdConnect middleware package.
 It's an ASP.NET Core middleware that enables an application to support the OpenID Connect authentication workflow.
 Check Startup.cs for actual code.
 
@@ -55,7 +55,7 @@ Check Startup.cs for actual code.
 Install identitymodel nuget package which provides extention function to help call UserInfo endpoint.
 Define a HttpClient service in Startup.cs. Use it to request extra user profile info from UserInfo endpoint.
 
-### parse access token in ImageGallery.API and use it for authorization (RBAC).
+### validate access token in ImageGallery.API and use it for authorization (RBAC).
 In ImageGallery.API project, install IdentityServer4.AccessTokenValidation.
 In ImageGallery.Client, add the http client to pass access to ImageGallery.API in Bearer HTTP request header.
 
