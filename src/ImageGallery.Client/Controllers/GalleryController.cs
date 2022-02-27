@@ -198,11 +198,43 @@ namespace ImageGallery.Client.Controllers
 
         public async Task Logout()
         {
-            // Passing the cookie scheme name when configuring the middleware in Setup.cs.
-            // This will clean up the user claims in the cookie.
-            await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+            var client = _httpClientFactory.CreateClient("IDPClient");
 
-            // Redirect the web browser logout to the Identity Server as well. So the user get logged out of Identity Server as well.
+            var discoveryDocumentResponse = await client.GetDiscoveryDocumentAsync();
+            if (discoveryDocumentResponse.IsError)
+            {
+                throw new Exception(discoveryDocumentResponse.Error);
+            }
+
+            var accessTokenRevocationResponse = await client.RevokeTokenAsync(
+                new TokenRevocationRequest
+                {
+                    Address = discoveryDocumentResponse.RevocationEndpoint,
+                    ClientId = "imagegalleryclient",
+                    ClientSecret = "secret",
+                    Token = await HttpContext.GetTokenAsync(OpenIdConnectParameterNames.AccessToken)
+                });
+
+            if (accessTokenRevocationResponse.IsError)
+            {
+                throw new Exception(accessTokenRevocationResponse.Error);
+            }
+
+            var refreshTokenRevocationResponse = await client.RevokeTokenAsync(
+                new TokenRevocationRequest
+                {
+                    Address = discoveryDocumentResponse.RevocationEndpoint,
+                    ClientId = "imagegalleryclient",
+                    ClientSecret = "secret",
+                    Token = await HttpContext.GetTokenAsync(OpenIdConnectParameterNames.RefreshToken)
+                });
+
+            if (refreshTokenRevocationResponse.IsError)
+            {
+                throw new Exception(accessTokenRevocationResponse.Error);
+            }
+
+            await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
             await HttpContext.SignOutAsync(OpenIdConnectDefaults.AuthenticationScheme);
         }
 
